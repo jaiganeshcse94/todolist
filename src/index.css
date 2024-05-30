@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Varela Round", sans-serif;
+}
+
+.todoHeading {
+    color: #14ad88;
+    font-size: 18px;
+    font-family: "Varela Round", sans-serif;
+    font-weight: 400;
+    text-align: center;
+}
+
+.BG-green {
+    background-color: #ccf5d3!important;
+}
+
+.bg-green {
+    background-color: #14ad88!important;
+    border: 1px solid #14ad88!important;
+    color: #fff;
+    width: 100%;
+}
+
+.dropper {
+    color: #fff!important;
+    max-width: 200px;
+}
+
+.dropper--success {
+    background: #13ad89!important;
+}
+
+.dropper--danger {
+    background: #fd8184!important;
+}
+
+.filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter_left h2,
+.filter_right h2 {
+    color: #000;
+    font-size: 18px;
+    font-family: "Varela Round", sans-serif;
+    font-weight: 400;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.filter_right {
+    display: flex;
+    align-items: center;
+}
