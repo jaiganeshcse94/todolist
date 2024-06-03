@@ -2,9 +2,7 @@ import React,{ useState, useEffect } from 'react'
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { findIndex } from "../utitlity/arrayindex";
-import { useNavigate} from 'react-router-dom';
 function Dashboard({ data, setData }) {
-    let navigate = useNavigate();
    const handlerDelete=(id)=>{
         let index=findIndex(data,id);
         console.log(index,id);
@@ -13,9 +11,11 @@ function Dashboard({ data, setData }) {
             newArray.splice(index,1);
             setData(newArray);
         }
-    }
+    } 
     let[name,setName]=useState('');
     let[text,setText]=useState('');
+    let[ids,setids]=useState('0');
+    let[toggle,settoggle]=useState(true);
     const addData=()=>{
         let id = data.length?data[data.length-1].id+1:1;
         let completed =false
@@ -63,24 +63,57 @@ function Dashboard({ data, setData }) {
       const handleFilterChange = (event) => {
         setFilter(event.target.value);
       };
+//edit function
+      const getData = (id)=>{
+        let index = findIndex(data,Number(id))
+        if(index!==-1)
+        {
+            setName(data[index].name)
+            setText(data[index].text)
+            setids(id);
+            settoggle(false);
+        }
+        else
+        {
+            console.error(`Invalid Id: ${id}`)
+        }
+    }
+   
+    const handleSubmit = ()=>{
+      console.log(ids);
+      let index = findIndex(data,Number(ids));
+      let editedData = {id:data[index].id,name,text,completed:data[index].completed}//forming the object
+
+      let newArray = [...data]//deep copy
+      newArray.splice(index,1,editedData)//replace the old data with edited data
+      console.log(newArray);
+      setData(newArray);
+      setName('');
+      setText('');
+      settoggle(true);
+  }
   return <>
   <div className="container">
         <h1 className="todoHeading mt-4 mb-4">My todo</h1>
         <Form className="row mb-4">
           <div className="col-lg-5">
             <Form.Group className="mb-3">
-              <Form.Control type="text" placeholder="Todo Name" onChange={(e)=>setName(e.target.value)}/>
+              <Form.Control type="text" placeholder="Todo Name" value={name} onChange={(e)=>setName(e.target.value)}/>
             </Form.Group>
           </div>
           <div className="col-lg-5">
             <Form.Group className="mb-3">
-              <Form.Control type="text" placeholder="Todo Decription" onChange={(e)=>setText(e.target.value)}/>
+              <Form.Control type="text" placeholder="Todo Decription" value={text} onChange={(e)=>setText(e.target.value)}/>
             </Form.Group>
           </div>
           <div className="col-lg-2">
-            <Button variant="success" className="bg-green" onClick={addData}>
+            {
+            toggle?<Button variant="success" className="bg-green" onClick={addData}>
               Add Todo
+            </Button>:<Button variant="success" className="bg-green" onClick={handleSubmit}>
+              Edit Todo
             </Button>
+            }
           </div>
         </Form>
         <div className="filter mb-4">
@@ -98,7 +131,7 @@ function Dashboard({ data, setData }) {
         </div>
         <div className="row">
           {
-            filteredData.map((e,i)=>{
+            filteredData.map((e)=>{
                 return <>
                       <div className="col-sm-4 mb-3" key={e.id}>
                         <div className="card BG-green">
@@ -116,7 +149,7 @@ function Dashboard({ data, setData }) {
                               <option value="true">Completed</option>
                               </Form.Select>
                             </p>
-                            <button href="#" className="btn btn-primary" onClick={()=>navigate(`/edit-user/${e.id}`)}>
+                            <button href="#" className="btn btn-primary" onClick={()=>getData(e.id)}>
                               Edit
                             </button>
                             &nbsp;&nbsp;
