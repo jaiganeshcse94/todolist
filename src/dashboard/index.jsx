@@ -29,6 +29,8 @@ function Dashboard({ data, setData }) {
         let newArray1 = [...data]//deep copy
         newArray1.push(newUser1)//add the user
         setData(newArray1)//update the state using state Fn
+        setName('');
+        setText('');
     }
     const handleChange = (e) => {
       console.log(e);
